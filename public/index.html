@@ -40,12 +40,18 @@
     <!-- PyScript CSS -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
     <!-- This script tag bootstraps PyScript -->
-    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js", >
+    </script>
+
   </head>
   <body>
-    <py-script>
-      print("Hello, World!")
-    </py-script>
+
+    <div id="header">
+      <h1>KL Buses Map</h1>
+    </div>
+    <div id="folium"></div>
+    <script type="py" src="./functions/main.py"></script>
+    
     <p id="load">Firebase SDK Loading&hellip;</p>
 
 
@@ -60,7 +66,7 @@
 
 
 
-    
+
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const loadEl = document.querySelector('#load');
