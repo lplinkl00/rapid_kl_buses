@@ -22,7 +22,7 @@ import requests
 
 initialize_app()
 
-@https_fn.on_request(cors = True)
+@https_fn.on_request(cors=True)
 def load_map_on_request(req: https_fn.Request) -> https_fn.Response:
     rapid_buses_url = "https://api.data.gov.my/gtfs-realtime/vehicle-position/prasarana?category=rapid-bus-kl"
     mrt_buses_url = "https://api.data.gov.my/gtfs-realtime/vehicle-position/prasarana?category=rapid-bus-mrtfeeder"
@@ -73,5 +73,8 @@ def load_map_on_request(req: https_fn.Request) -> https_fn.Response:
     html = m.to_html()
     return https_fn.Response(html,
         headers={
-            "Content-Type": "text/html" # or your specific host
+            "Content-Type": "text/html",
+            "Access-Control-Allow-Origin": "*",  # or specify your domain, e.g., "https://yourdomain.com"
+            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type"
         },)
