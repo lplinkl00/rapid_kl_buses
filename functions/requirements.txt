@@ -2,4 +2,5 @@ firebase_functions~=0.1.0
 folium
 pandas
 gtfs_realtime_bindings
-pyscript
+requests
+protobuf

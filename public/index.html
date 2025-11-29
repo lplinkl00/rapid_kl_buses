@@ -49,8 +49,29 @@
     <div id="header">
       <h1>KL Buses Map</h1>
     </div>
-    <div id="folium"></div>
-    <script type="py" src="./functions/main.py"></script>
+    <div id="map">
+      <script>
+        async function loadMap() {
+          const mapEl = document.getElementById('map');
+          mapEl.textContent = 'Loading map…';
+      
+          try {
+            const response = await fetch('https://kl-buses-free-n-better.web.app/load_map_on_request', {
+              headers: { 'Accept': 'text/html' }
+            });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const html = await response.text();
+            mapEl.innerHTML = html;
+          } catch (err) {
+            console.error(err);
+            mapEl.textContent = 'Failed to load map.';
+          }
+        }
+      
+        loadMap();
+      </script>
+    </div>
+    
     
     <p id="load">Firebase SDK Loading&hellip;</p>
 

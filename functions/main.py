@@ -13,20 +13,16 @@ from firebase_admin import initialize_app
 # parameter in the decorator, e.g. @https_fn.on_request(max_instances=5).
 set_global_options(max_instances=10)
 
-import os
-import json
 import folium
 import pandas as pd
-import numpy
 from google.transit import gtfs_realtime_pb2
 from google.protobuf.json_format import MessageToDict
 import requests
-from pyscript import display
 
 
-app = initialize_app()
+initialize_app()
 
-@https_fn.on_request()
+@https_fn.on_request(cors = True)
 def load_map_on_request(req: https_fn.Request) -> https_fn.Response:
     rapid_buses_url = "https://api.data.gov.my/gtfs-realtime/vehicle-position/prasarana?category=rapid-bus-kl"
     mrt_buses_url = "https://api.data.gov.my/gtfs-realtime/vehicle-position/prasarana?category=rapid-bus-mrtfeeder"
@@ -74,6 +70,8 @@ def load_map_on_request(req: https_fn.Request) -> https_fn.Response:
     folium.Marker(location=test_usr_location, icon=usr_icon, radius=4).add_to(usr_fg)
     print(usr_coords.split(','))
     usr_fg.add_to(m)
-
-    display(m, target="folium")
-    return m
+    html = m.to_html()
+    return https_fn.Response(html,
+        headers={
+            "Content-Type": "text/html" # or your specific host
+        },)
