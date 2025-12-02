@@ -37,11 +37,6 @@
         body { border-top: 16px solid #ffa100; }
       }
     </style>
-    <!-- PyScript CSS -->
-    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
-    <!-- This script tag bootstraps PyScript -->
-    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js", >
-    </script>
 
   </head>
   <body>
@@ -56,7 +51,7 @@
           mapEl.textContent = 'Loading map…';
       
           try {
-            const response = await fetch('https://kl-buses-free-n-better.web.app/load_map_on_request', {
+            const response = await fetch('https://us-central1-kl_buses_free_n_better.cloudfunctions.net/load_map_on_request', {
               headers: { 'Accept': 'text/html' }
             });
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -74,13 +69,6 @@
     
     
     <p id="load">Firebase SDK Loading&hellip;</p>
-
-
-
-
-
-
-
 
 
 

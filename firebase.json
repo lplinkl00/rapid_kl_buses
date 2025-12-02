@@ -8,10 +8,13 @@
     ],
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
-      },
-      {"source" : "functions/**", "function" : "load_map_on_request"}
+        "source": "/functions",
+        "function": {
+          "functionId":"load_map_on_request"
+          
+        }
+        
+      }
     ]
   },
   "functions": {

@@ -4,8 +4,9 @@
 
 from firebase_functions import https_fn
 from firebase_functions.options import set_global_options
+from firebase_functions.options import CorsOptions
 from firebase_admin import initialize_app
-
+import datetime
 # For cost control, you can set the maximum number of containers that can be
 # running at the same time. This helps mitigate the impact of unexpected
 # traffic spikes by instead downgrading performance. This limit is a per-function
@@ -22,7 +23,7 @@ import requests
 
 initialize_app()
 
-@https_fn.on_request(cors=True)
+@https_fn.on_request(cors=CorsOptions(cors_origins="*", cors_methods=["get", "post"]))
 def load_map_on_request(req: https_fn.Request) -> https_fn.Response:
     rapid_buses_url = "https://api.data.gov.my/gtfs-realtime/vehicle-position/prasarana?category=rapid-bus-kl"
     mrt_buses_url = "https://api.data.gov.my/gtfs-realtime/vehicle-position/prasarana?category=rapid-bus-mrtfeeder"
@@ -70,11 +71,5 @@ def load_map_on_request(req: https_fn.Request) -> https_fn.Response:
     folium.Marker(location=test_usr_location, icon=usr_icon, radius=4).add_to(usr_fg)
     print(usr_coords.split(','))
     usr_fg.add_to(m)
-    html = m.to_html()
-    return https_fn.Response(html,
-        headers={
-            "Content-Type": "text/html",
-            "Access-Control-Allow-Origin": "*",  # or specify your domain, e.g., "https://yourdomain.com"
-            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type"
-        },)
+    html = m._repr_html_()
+    return https_fn.Response(html)
