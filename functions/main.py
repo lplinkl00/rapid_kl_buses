@@ -2,9 +2,8 @@
 # To get started, simply uncomment the below code or create your own.
 # Deploy with `firebase deploy`
 
-from firebase_functions import https_fn
+from firebase_functions import https_fn, options
 from firebase_functions.options import set_global_options
-from firebase_functions.options import CorsOptions
 from firebase_admin import initialize_app
 import datetime
 # For cost control, you can set the maximum number of containers that can be
@@ -21,9 +20,9 @@ from google.protobuf.json_format import MessageToDict
 import requests
 
 
-initialize_app()
-
-@https_fn.on_request(cors=CorsOptions(cors_origins="*", cors_methods=["get", "post"]))
+@https_fn.on_request(cors=options.CorsOptions(
+        cors_origins="*",
+        cors_methods=["get", "post", "options"],))
 def load_map_on_request(req: https_fn.Request) -> https_fn.Response:
     rapid_buses_url = "https://api.data.gov.my/gtfs-realtime/vehicle-position/prasarana?category=rapid-bus-kl"
     mrt_buses_url = "https://api.data.gov.my/gtfs-realtime/vehicle-position/prasarana?category=rapid-bus-mrtfeeder"
@@ -68,7 +67,7 @@ def load_map_on_request(req: https_fn.Request) -> https_fn.Response:
     test_usr_location = [3.155687,101.692563]
     usr_fg = folium.FeatureGroup(name="User")
     usr_icon = folium.Icon(color="red", icon="person", prefix="fa")
-    folium.Marker(location=test_usr_location, icon=usr_icon, radius=4).add_to(usr_fg)
+    # folium.Marker(location=test_usr_location, icon=usr_icon, radius=4).add_to(usr_fg)
     print(usr_coords.split(','))
     usr_fg.add_to(m)
     html = m._repr_html_()
