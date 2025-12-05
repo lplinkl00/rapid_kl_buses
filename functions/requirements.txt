@@ -5,3 +5,4 @@ gtfs_realtime_bindings
 requests
 protobuf
 flask
+asyncio
